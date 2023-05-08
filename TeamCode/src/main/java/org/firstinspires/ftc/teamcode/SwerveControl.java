@@ -50,9 +50,6 @@ public class SwerveControl extends LinearOpMode {
 
         while (!isStopRequested()) {
             target = Math.toDegrees(Math.atan2(gamepad1.left_stick_x, -gamepad1.left_stick_y));
-            //target += 0.1;
-            //if (target>360)
-            //    target = 0;
             double movePower = (gamepad1.left_stick_x*gamepad1.left_stick_x)+(gamepad1.left_stick_y*gamepad1.left_stick_y);
 
             rotation = rot.getDegrees()+offset;
@@ -67,7 +64,7 @@ public class SwerveControl extends LinearOpMode {
             pid.setSetPoint(moveTo);
 
 
-            podMove(Math.cos(Math.toRadians(moveTo))*movePower, (Math.cos(Math.toRadians(moveTo))-1)*Math.signum(movePower));
+            podMove(Math.cos(Math.toRadians(moveTo))*movePower, pid.calculate());
 
 
             telemetry.addData("p", top.getVeloCoefficients()[0]);
