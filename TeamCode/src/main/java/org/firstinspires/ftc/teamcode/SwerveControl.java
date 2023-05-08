@@ -67,7 +67,7 @@ public class SwerveControl extends LinearOpMode {
             pid.setSetPoint(moveTo);
 
 
-            podMove(Math.cos(Math.toRadians(moveTo))*movePower, -Math.sin(Math.toRadians(moveTo-90.0))*p);
+            podMove(Math.cos(Math.toRadians(moveTo))*movePower, (Math.cos(Math.toRadians(moveTo))-1)*Math.signum(movePower));
 
 
             telemetry.addData("p", top.getVeloCoefficients()[0]);
