@@ -38,39 +38,23 @@ public class SwerveModule {
         double rotation = rot.getDegrees();
         double moveTo = AngleUnit.normalizeDegrees(heading-rotation);
         if (!compare(moveTo,0,90)) {
-           // moveTo = AngleUnit.normalizeDegrees(moveTo-180);
+            moveTo = AngleUnit.normalizeDegrees(moveTo-180);
             wheel*=-1;
         }
         telemetry.addData("moveTo", moveTo);
         telemetry.addData("rotation", rotation);
         telemetry.addData("heading", heading);
         pid.setSetPoint(moveTo);
-        podMove(wheel, pid.calculate());
+        podMove(Math.cos(Math.toRadians(moveTo))*wheel, pid.calculate());
     }
     public void podMove(double wheel, double heading) {
+        heading*=-1;
         telemetry.addData("wheel", wheel);
         telemetry.addData("heading", heading);
         double topP = wheel-heading;
         double bottomP = wheel+heading;
 
-        /*if (Math.abs(topP)>1) {
-            bottomP = Math.abs(bottomP/topP)*Math.signum(bottomP);
-            topP = Math.signum(topP);
-        }
-        if (Math.abs(bottomP)>1) {
-            topP = Math.abs(topP/bottomP)*Math.signum(topP);
-            bottomP = Math.abs(bottomP);
-        }
-        telemetry.addData("TopP", topP);
-        telemetry.addData("bottomP", bottomP);
-        telemetry.addData("Difference", Math.abs((topP-bottomP)/2));
-        telemetry.addData("Heading", heading);
-        // sanity check!
-        topP = Math.min(1, topP);
-        topP = Math.max(-1, topP);
 
-        bottomP = Math.min(1, bottomP);
-        bottomP = Math.max(-1, bottomP);*/
         double [] powers = {topP, bottomP};
         powers = normalize(powers, 1);
         telemetry.addData("TopP", topP);

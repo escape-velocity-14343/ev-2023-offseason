@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="Michale VSauce Here!")
 public class SwerveModuleTest extends HardwareTemplate {
 
-    public static double p = 0.008;
+    public static double p = 0.003;
     public static double i = 0;
     public static double d = 0.001;
 
@@ -18,7 +18,7 @@ public class SwerveModuleTest extends HardwareTemplate {
             module.setPid(p, i, d);
             double target = Math.toDegrees(Math.atan2(gamepad1.left_stick_x, -gamepad1.left_stick_y));
             double movePower = (gamepad1.left_stick_x*gamepad1.left_stick_x)+(gamepad1.left_stick_y*gamepad1.left_stick_y);
-            module.podPid(0, target);
+            module.podPid(movePower, target);
             telemetry.update();
         }
     }
