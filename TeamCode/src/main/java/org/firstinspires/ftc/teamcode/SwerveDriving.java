@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -14,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp
 @Config
-public class SwerveControl extends LinearOpMode {
+public class SwerveDriving extends LinearOpMode {
 
     public static double offset = 0;
     public static double topPower = 0;
@@ -36,9 +35,9 @@ public class SwerveControl extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        top = new Motor(hardwareMap,"tm");
-        bottom = new Motor(hardwareMap,"bm");
-        AS5600 rot = new AS5600(hardwareMap,"rot");
+        top = new Motor(hardwareMap,"ltm");
+        bottom = new Motor(hardwareMap,"lbm");
+        AS5600 rot = new AS5600(hardwareMap,"lrot");
 
         top.setRunMode(Motor.RunMode.RawPower);
 

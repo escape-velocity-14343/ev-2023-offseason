@@ -19,6 +19,7 @@ public class SwerveModule {
     AS5600 rot;
     Telemetry telemetry;
     PIDController pid = new PIDController(0.008, 0.1, 0);
+    double error = 0;
     public SwerveModule(Motor top, Motor bottom, AS5600 rot, Telemetry telemetry) {
         this.top = top;
         this.bottom = bottom;
@@ -34,6 +35,9 @@ public class SwerveModule {
     public void podPid(Vector2d vector) {
         podPid(vector.magnitude(), vector.angle());
     }
+    public void podPidXY(double x, double y) {
+        podPid(Math.hypot(x,y), Math.toDegrees(Math.atan2(y,x)));
+    }
     public void podPid(double wheel, double heading) {
         double rotation = rot.getDegrees();
         double moveTo = AngleUnit.normalizeDegrees(heading-rotation);
@@ -45,7 +49,9 @@ public class SwerveModule {
         telemetry.addData("rotation", rotation);
         telemetry.addData("heading", heading);
         pid.setSetPoint(moveTo);
-        podMove(Math.cos(Math.toRadians(moveTo))*wheel, pid.calculate());
+        error = pid.getPositionError();
+
+        podMove(Math.cos(Math.toRadians(error))*wheel, pid.calculate());
     }
     public void podMove(double wheel, double heading) {
         heading*=-1;
@@ -60,7 +66,7 @@ public class SwerveModule {
         telemetry.addData("TopP", topP);
         telemetry.addData("bottomP", bottomP);
         top.set(powers[0]);
-        bottom.set(powers[1]);
+        bottom.set(-powers[1]);
     }
 
     public double[] normalize(double[] values, double magnitude) {
@@ -79,5 +85,12 @@ public class SwerveModule {
         return values;
 
     }
+    public boolean close(double moveTo) {
+        return compare(moveTo, rot.getDegrees(),10)||compare(moveTo, AngleUnit.normalizeDegrees(rot.getDegrees()+180), 10);
+    }
+    public double getError() {
+        return error;
+    }
+
 }
 

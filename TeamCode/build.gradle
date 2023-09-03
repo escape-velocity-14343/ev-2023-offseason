@@ -25,9 +25,9 @@ android {
 
 dependencies {
     implementation project(':FtcRobotController')
-    implementation files('lib/librealsense-release.aar')
+    //implementation files('lib/librealsense-release.aar')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
     implementation 'org.ftclib.ftclib:core:2.1.1'
-    implementation 'org.openftc:easyopencv:1.6.0'
+    //implementation 'org.openftc:easyopencv:1.6.0'
 }
 
